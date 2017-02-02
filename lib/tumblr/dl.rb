@@ -41,14 +41,14 @@ module TumblrDl
   end
 
   def get_all_resource_url_with(html)
-    puts 'get all resource url'
+    puts 'Cache all resource url:'
     video_list, image_list = get_resource_url_with html
     data = JSON.parse html[22..-3]
     start = data['posts-start'].to_i
     total = data['posts-total'].to_i
     username = data['tumblelog']['name']
     while start < total
-      puts "#{start}-#{start+50}/#{total}"
+      puts "Now: #{start}-#{start + 50 > total ? total : start + 50} Total: #{total}"
       video_list, image_list = get_resource_url_with get_html_with username, start
       save_url [
         {username: username, type: 'video', data: video_list},
@@ -56,18 +56,18 @@ module TumblrDl
       ]
       start += 50
     end
-    puts 'finish!'
+    puts 'Done!'
   end
 
   def save_url(lists)
-    print 'saving list...'
+    print 'Saving list...'
     lists.each do |list|
       next if list[:data].empty?
       path = "./#{list[:username]}/#{list[:type]}.txt"
       data = list[:data].join "\n"
       open(path, 'a') {|io| io.write "#{data}\n"}
     end
-    puts 'saved!'
+    puts 'Saved!'
   end
 
   def wget_video(username)
