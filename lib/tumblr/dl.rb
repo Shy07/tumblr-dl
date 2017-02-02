@@ -7,7 +7,7 @@ module TumblrDl
   module_function
 
   def get_html_with(username, start = 0)
-    uri = URI.parse("http://#{username}.tumblr.com/api/read/json?start=#{start}&num=50")
+    uri = URI.parse "http://#{username}.tumblr.com/api/read/json?start=#{start}&num=50"
     html_string = Net::HTTP.get uri
     ["./#{username}", "./#{username}/json"].each do |path|
       unless File.exist? path; begin; Dir.mkdir path; rescue; end; end
@@ -24,11 +24,14 @@ module TumblrDl
     video_list = []
     image_list = []
     data = JSON.parse html[22..-3]
+    print '['
     data['posts'].each do |post|
+      print '='
       if post['type'] == 'video'
         next if post['video-player-500'] == false
         if post['video-player-500'] =~ /src="(.*)" type/
-          video_list << "#{$1}.mp4"
+          res = Net::HTTP.get_response URI.parse "#{$1}.mp4"
+          video_list << res['location'].scan(/http:.*mp4/)
         else
           video_list << post['video-player-500']
         end
@@ -41,12 +44,12 @@ module TumblrDl
         end
       end
     end
+    print "]\n"
     return video_list, image_list
   end
 
   def get_all_resource_url_with(html)
     puts 'Cache all resource url:'
-    video_list, image_list = get_resource_url_with html
     data = JSON.parse html[22..-3]
     start = data['posts-start'].to_i
     total = data['posts-total'].to_i
@@ -74,26 +77,14 @@ module TumblrDl
     puts 'Saved!'
   end
 
-  def wget_video(username)
-    string = open("./#{username}/video.txt", 'rb') {|io| io.read }
+  def wget_resources(username, type)
+    string = open("./#{username}/#{type}.txt", 'rb') {|io| io.read }
     data = string.split("\n").uniq.sort
     data.each_with_index do |line, index|
       puts "#{index+1}/#{data.size}"
       next if line == ""
-      filename = "./#{username}/#{index}_#{line.split("/")[-1]}"
-      next if File.exist? filename
-      system "wget -O #{filename} #{line}"
-    end
-  end
-
-  def wget_image(username)
-    string = open("./#{username}/photo.txt", 'rb') {|io| io.read }
-    data = string.split("\n").uniq.sort
-    data.each_with_index do |line, index|
-      puts "#{index+1}/#{data.size}"
-      next if line == ""
-      next if File.exist? "./#{username}/photo/#{line.split("/")[-1]}"
-      system "wget -P ./#{username}/photo/ #{line}"
+      next if File.exist? "./#{username}/#{type}/#{line.split("/")[-1]}"
+      system "wget -P ./#{username}/#{type}/ #{line}"
     end
   end
 
@@ -108,12 +99,12 @@ module TumblrDl
       when '-d'
         case argv[index + 1]
         when 'video'
-          wget_video username
+          wget_resources username, 'video'
         when 'image'
-          wget_image username
+          wget_resources username, 'photo'
         else
-          wget_image username
-          wget_video username
+          wget_resources username, 'photo'
+          wget_resources username, 'video'
         end
       end
     end
