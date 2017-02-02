@@ -4,27 +4,32 @@ Tumblr-dl is a command-line tool for downloading Tumblr resources by username.
 
 ## Installation
 
-Install it yourself as:
+Install as:
 
     $ gem install tumblr-dl
 
 ## Usage
 
-Cache recouces:
+You should cache resources before downloading:
 
-    $ tumblr_dl username
+    $ tumblr_dl <username>
 
-Cache and download:
+Then you will get the resource lists such as `video.txt` and `photo.txt`.
+And you could download the resources by other tools what you like.
+Of course, you can download by this tools too,
+but you should make sure you've installed `wget` first.
 
-    $ tumblr_dl username -d
-    $ tumblr_dl username -d video
-    $ tumblr_dl username -d image
+When you have installed `wget`, you may cache and download as:
 
-If you have cached and just download, use:
+    $ tumblr_dl <username> -d         # download all
+    $ tumblr_dl <username> -d video   # just download video resources
+    $ tumblr_dl <username> -d image   # just download image resources
 
-    $ tumblr_dl username -nc -d
-    $ tumblr_dl username -nc -d video
-    $ tumblr_dl username -nc -d image
+If you have cached and just want to download, use:
+
+    $ tumblr_dl <username> -nc -d
+    $ tumblr_dl <username> -nc -d video
+    $ tumblr_dl <username> -nc -d image
 
 ## Contributing
 
