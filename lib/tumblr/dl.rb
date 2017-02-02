@@ -12,6 +12,10 @@ module TumblrDl
     ["./#{username}", "./#{username}/json"].each do |path|
       unless File.exist? path; begin; Dir.mkdir path; rescue; end; end
     end
+    if html_string.empty?
+      res = Net::HTTP.get_response uri
+      html_string = Net::HTTP.get URI.parse res['location']
+    end
     open("./#{username}/json/lists#{start}.json", 'wb') {|io| io.write html_string }
     html_string
   end
@@ -95,6 +99,7 @@ module TumblrDl
 
   def start(argv)
     username = argv.shift
+    $debug = (argv.include? '-debug') ? true : false
     unless argv.include? '-nc'
       get_all_resource_url_with get_html_with username
     end
