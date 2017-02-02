@@ -15,7 +15,7 @@ You should cache resources before downloading:
     $ tumblr_dl <username>
 
 Then you will get the resource lists such as `video.txt` and `photo.txt`.
-And you could download the resources by other tools what you like.
+And you could download the resources by other tools what you like.  
 Of course, you can download by this tools too,
 but you should make sure you've installed `wget` first.
 
