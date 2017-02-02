@@ -1,4 +1,4 @@
-# require "tumblr/dl/version"
+require "tumblr/dl/version"
 require 'net/http'
 require 'json'
 
