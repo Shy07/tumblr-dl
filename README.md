@@ -20,7 +20,7 @@ Cache and download:
     $ tumblr_dl username -d video
     $ tumblr_dl username -d image
 
-if you have cached and just download, use:
+If you have cached and just download, use:
 
     $ tumblr_dl username -nc -d
     $ tumblr_dl username -nc -d video
