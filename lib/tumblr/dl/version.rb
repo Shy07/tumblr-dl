@@ -1,5 +1,3 @@
-module Tumblr
-  module Dl
-    VERSION = "0.1.3"
-  end
+module TumblrDl
+  VERSION = "0.1.4"
 end

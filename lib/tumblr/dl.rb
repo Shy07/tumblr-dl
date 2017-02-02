@@ -4,6 +4,30 @@ require 'json'
 
 module TumblrDl
 
+  HELP =<<__HERE__
+You should cache resources before downloading:
+
+    $ tumblr_dl <username>
+
+Then you will get the resource lists such as `video.txt` and `photo.txt`.
+And you could download the resources by other tools what you like.
+Of course, you can download by this tools too,
+but you should make sure you've installed `wget` first.
+
+When you have installed `wget`, you may cache and download as:
+
+    $ tumblr_dl <username> -d         # download all
+    $ tumblr_dl <username> -d video   # just download video resources
+    $ tumblr_dl <username> -d image   # just download image resources
+
+If you have cached and just want to download, use:
+
+    $ tumblr_dl <username> -nc -d
+    $ tumblr_dl <username> -nc -d video
+    $ tumblr_dl <username> -nc -d image
+
+__HERE__
+
   module_function
 
   def get_html_with(username, start = 0)
@@ -89,8 +113,11 @@ module TumblrDl
   end
 
   def start(argv)
-    username = argv.shift
     $debug = (argv.include? '-debug') ? true : false
+    return print HELP if argv.include? '-h'
+    return puts VERSION if argv.include? '-v'
+    username = argv.shift
+    return print HELP if username.nil? || username.empty?
     unless argv.include? '-nc'
       get_all_resource_url_with get_html_with username
     end

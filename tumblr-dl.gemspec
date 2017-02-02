@@ -5,7 +5,7 @@ require 'tumblr/dl/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "tumblr-dl"
-  spec.version       = Tumblr::Dl::VERSION
+  spec.version       = TumblrDl::VERSION
   spec.authors       = ["Lynch HSU"]
   spec.email         = ["Gernischt@gmail.com"]
 
@@ -17,7 +17,4 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables << 'tumblr_dl'
   spec.require_paths = ["lib"]
-
-  spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "rake", "~> 10.0"
 end
