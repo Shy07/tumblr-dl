@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# require 'pathname'
+# THIS_FILE = Pathname.new(File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__).realpath
+THIS_FILE = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+begin
+  require File.dirname(THIS_FILE) + '/../lib/tumblr/dl'
+# rescue LoadError
+#   require "tumblr/dl"
+end
+
+TumblrDl.start ARGV
