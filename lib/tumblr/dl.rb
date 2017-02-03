@@ -49,7 +49,9 @@ __HERE__
     video_list = []
     image_list = []
     data = JSON.parse html[22..-3]
-    Console.draw_process_bar
+    start = data['posts-start'].to_i
+    total = data['posts-total'].to_i
+    Console.draw_process_bar start, total
     data['posts'].each_with_index do |post, index|
       if post['type'] == 'video'
         next if post['video-player-500'] == false
@@ -67,19 +69,19 @@ __HERE__
           end
         end
       end
-      Console.draw_process_bar index + 1, data['posts'].size
+      Console.draw_process_bar start + index + 1, total
     end
     return video_list, image_list
   end
 
   def get_all_resource_url_with(html)
-    puts 'Cache all resource url:'
     data = JSON.parse html[22..-3]
     start = data['posts-start'].to_i
     total = data['posts-total'].to_i
     username = data['tumblelog']['name']
+    return puts 'No post!' if total.zero?
+    puts "Find and cache resources from all #{total} post[s]:"
     while start < total
-      puts "Now: #{start}-#{start + 50 > total ? total : start + 50} Total: #{total}"
       video_list, image_list = get_resource_url_with get_html_with username, start
       save_url [
         {username: username, type: 'video', data: video_list},
@@ -91,14 +93,12 @@ __HERE__
   end
 
   def save_url(lists)
-    print 'Saving list...'
     lists.each do |list|
       next if list[:data].empty?
       path = "./#{list[:username]}/#{list[:type]}.txt"
       data = list[:data].join "\n"
       open(path, 'a') {|io| io.write "#{data}\n"}
     end
-    puts 'Saved!'
   end
 
   def wget_resources(username, type)
