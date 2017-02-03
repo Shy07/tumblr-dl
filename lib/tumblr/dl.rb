@@ -1,7 +1,7 @@
 require "tumblr/dl/version"
 require 'net/http'
 require 'json'
-require 'console'
+require 'tumblr/console'
 
 module TumblrDl
 
