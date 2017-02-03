@@ -102,7 +102,9 @@ __HERE__
   end
 
   def wget_resources(username, type)
-    string = open("./#{username}/#{type}.txt", 'rb') {|io| io.read }
+    filename = "./#{username}/#{type}.txt"
+    return unless File.exist? filename
+    string = open(filename, 'rb') {|io| io.read }
     data = string.split("\n").uniq.sort
     data.each_with_index do |line, index|
       puts "#{index+1}/#{data.size}"
