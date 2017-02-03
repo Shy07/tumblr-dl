@@ -17,4 +17,6 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables << 'tumblr_dl'
   spec.require_paths = ["lib"]
+  
+  spec.required_ruby_version = '>= 1.9.3'
 end
