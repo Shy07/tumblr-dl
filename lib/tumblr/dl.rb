@@ -1,6 +1,7 @@
 require "tumblr/dl/version"
 require 'net/http'
 require 'json'
+require 'console'
 
 module TumblrDl
 
@@ -48,9 +49,8 @@ __HERE__
     video_list = []
     image_list = []
     data = JSON.parse html[22..-3]
-    print '['
-    data['posts'].each do |post|
-      print '='
+    Console.draw_process_bar 0, data['posts'].size
+    data['posts'].each_with_index do |post, index|
       if post['type'] == 'video'
         next if post['video-player-500'] == false
         if post['video-player-500'] =~ /src="(.*)" type/
@@ -67,8 +67,8 @@ __HERE__
           end
         end
       end
+      Console.draw_process_bar index + 1, data['posts'].size
     end
-    print "]\n"
     return video_list, image_list
   end
 
