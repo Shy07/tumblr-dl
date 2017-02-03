@@ -12,7 +12,7 @@ Install as:
 
 You should cache resources before downloading:
 
-    $ tumblr_dl <username>
+    $ tumblr_dl <username>            # username means xxx of xxx.tumblr.com
 
 Then you will get the resource lists such as `video.txt` and `photo.txt`.
 And you could download the resources by other tools what you like.  
