@@ -49,7 +49,7 @@ __HERE__
     video_list = []
     image_list = []
     data = JSON.parse html[22..-3]
-    Console.draw_process_bar 0, 1
+    Console.draw_process_bar
     data['posts'].each_with_index do |post, index|
       if post['type'] == 'video'
         next if post['video-player-500'] == false
