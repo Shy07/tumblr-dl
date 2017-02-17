@@ -6,26 +6,20 @@ require 'tumblr/console'
 module TumblrDl
 
   HELP =<<__HERE__
-You should cache resources before downloading:
+Usage:
+  tumblr_dl -h                      print this help info
+  tumblr_dl -v                      print version number
+  tumblr_dl <username> [options]
+    options:
+      -d [resource type]            cache and download resources
+                                    e.g.  tumblr_dl alice -d video
+                                          tumblr_dl bob -d image
+      -nc                           do not cache
+                                    e.g. tumblr_dl carol -nc -d video
 
-    $ tumblr_dl <username>
-
-Then you will get the resource lists such as `video.txt` and `photo.txt`.
-And you could download the resources by other tools what you like.
-Of course, you can download by this tools too,
-but you should make sure you've installed `wget` first.
-
-When you have installed `wget`, you may cache and download as:
-
-    $ tumblr_dl <username> -d         # download all
-    $ tumblr_dl <username> -d video   # just download video resources
-    $ tumblr_dl <username> -d image   # just download image resources
-
-If you have cached and just want to download, use:
-
-    $ tumblr_dl <username> -nc -d
-    $ tumblr_dl <username> -nc -d video
-    $ tumblr_dl <username> -nc -d image
+Tips:
+  <username> means the `xxx` of `xxx.tumblr.com`.
+  When you using `-d` to download resources, you should make sure you've installed `wget` first.
 
 __HERE__
 
@@ -48,6 +42,7 @@ __HERE__
   def get_resource_url_with(html)
     video_list = []
     image_list = []
+    audio_list = []
     data = JSON.parse html[22..-3]
     start = data['posts-start'].to_i
     total = data['posts-total'].to_i
@@ -68,10 +63,12 @@ __HERE__
             image_list << photo['photo-url-1280']
           end
         end
+      elsif post['type'] == 'audio'
+        audio_list << post#['audio-player']
       end
       Console.draw_process_bar start + index + 1, total
     end
-    return video_list, image_list
+    return video_list, image_list, audio_list
   end
 
   def get_all_resource_url_with(html)
@@ -82,10 +79,11 @@ __HERE__
     return puts 'No post!' if total.zero?
     puts "Find and cache resources from all #{total} post[s]:"
     while start < total
-      video_list, image_list = get_resource_url_with get_html_with username, start
+      video_list, image_list, audio_list = get_resource_url_with get_html_with username, start
       save_url [
         {username: username, type: 'video', data: video_list},
-        {username: username, type: 'photo', data: image_list}
+        {username: username, type: 'photo', data: image_list},
+        {username: username, type: 'audio', data: audio_list}
       ]
       start += 50
     end

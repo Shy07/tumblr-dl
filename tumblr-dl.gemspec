@@ -11,12 +11,12 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Get image and video resources from Tumblr by username.}
   spec.description   = %q{Get image and video resources from Tumblr by username.}
-  spec.homepage      = "http://shy07.com"
+  spec.homepage      = "https://github.com/Shy07/tumblr-dl"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables << 'tumblr_dl'
   spec.require_paths = ["lib"]
-  
+
   spec.required_ruby_version = '>= 1.9.3'
 end
