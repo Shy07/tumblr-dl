@@ -19,11 +19,11 @@ And you could download the resources by other tools what you like.
 Of course, you can download by this tools too,
 but you should make sure you've installed `wget` first.
 
-When you have installed `wget`, you may cache and download as:
+If you have installed `wget`, you may cache and download as:
 
-    $ tumblr_dl <username> -d         # download all
-    $ tumblr_dl <username> -d video   # just download video resources
-    $ tumblr_dl <username> -d image   # just download image resources
+    $ tumblr_dl <username> -d         # download all resources
+    $ tumblr_dl <username> -d video   # download video resources only
+    $ tumblr_dl <username> -d image   # download image resources only
 
 If you have cached and just want to download, use:
 
